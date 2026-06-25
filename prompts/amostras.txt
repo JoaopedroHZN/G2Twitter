@@ -1,0 +1,1 @@
+prompt para gerar rotas do servidor Express feito por João Pedro": "pode ser [em resposta a: criar o server.js com as rotas de Autenticação e Posts]
