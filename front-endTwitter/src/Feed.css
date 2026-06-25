@@ -1,0 +1,121 @@
+.feed-container {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    min-height: 100vh;
+    border-left: 1px solid #eff3f4;
+    border-right: 1px solid #eff3f4;
+}
+
+.feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eff3f4;
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.feed-header h2 {
+    color: #1da1f2;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logout-btn {
+    background: transparent;
+    border: 1px solid #e0245e;
+    color: #e0245e;
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.compose-box {
+    padding: 20px;
+    border-bottom: 10px solid #eff3f4;
+}
+
+.compose-box textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    font-size: 1.2rem;
+    outline: none;
+    min-height: 60px;
+}
+
+.compose-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+    border-top: 1px solid #eff3f4;
+    padding-top: 10px;
+}
+
+.char-count {
+    color: #536471;
+    font-size: 0.9rem;
+}
+
+.post-btn {
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.posts-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-card {
+    display: flex;
+    gap: 15px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eff3f4;
+    transition: background-color 0.2s;
+}
+
+.post-card:hover {
+    background-color: #f7f9f9;
+}
+
+.post-avatar {
+    width: 48px;
+    height: 48px;
+    background-color: #1da1f2;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.post-content {
+    flex: 1;
+}
+
+.post-text {
+    margin: 5px 0 0 0;
+    line-height: 1.4;
+}

@@ -1,82 +1,83 @@
-// Feed.jsx (Front-end)
-import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Lembre-se de instalar: npm install axios
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from './AuthContext';
+import axios from 'axios';
+import './Feed.css'; // 🔥 Importando o visual!
 
 export default function Feed() {
-  const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState('');
+    const { user, logout } = useContext(AuthContext);
+    const [posts, setPosts] = useState([]);
+    const [content, setContent] = useState('');
 
-  // Simulação de usuário logado para poder postar agora
-  const mockUserId = 1; 
+    // Função para buscar os posts no nosso Backend Node
+    const carregarPosts = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/api/posts');
+            setPosts(response.data);
+        } catch (error) {
+            console.error("Erro ao carregar posts:", error);
+        }
+    };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+    // Executa assim que a tela abre
+    useEffect(() => {
+        carregarPosts();
+    }, []);
 
-  const fetchPosts = async () => {
-    try {
-      const response = await axios.get('http://localhost:3001/posts');
-      setPosts(response.data);
-    } catch (error) {
-      console.error("Erro ao buscar posts:", error);
-    }
-  };
+    // Função disparada ao clicar em "Postar"
+    const handlePostar = async () => {
+        if (!content.trim()) return;
 
-  const handlePostSubmit = async (e) => {
-    e.preventDefault();
-    if (!newPost.trim()) return;
+        try {
+            await axios.post('http://localhost:3000/api/posts', {
+                user_id: user.id,
+                content: content
+            });
+            setContent(''); // Limpa o campo de texto
+            carregarPosts(); // Recarrega a lista para mostrar o post novo na hora
+        } catch (error) {
+            console.error("Erro ao publicar:", error);
+        }
+    };
 
-    try {
-      await axios.post('http://localhost:3001/posts', {
-        content: newPost,
-        user_id: mockUserId
-      });
-      setNewPost('');
-      fetchPosts(); // Recarrega a lista após postar
-    } catch (error) {
-      console.error("Erro ao criar post:", error);
-    }
-  };
+    return (
+        <div className="feed-container">
+            {/* Cabeçalho */}
+            <header className="feed-header">
+                <h2>🐦 MicroTweet</h2>
+                <div className="user-info">
+                    <span>Olá, <strong>{user?.name}</strong>!</span>
+                    <button onClick={logout} className="logout-btn">Sair</button>
+                </div>
+            </header>
 
-  const handleLike = async (postId) => {
-    try {
-      await axios.post(`http://localhost:3001/posts/${postId}/like`);
-      fetchPosts(); // Atualiza a contagem de likes
-    } catch (error) {
-      console.error("Erro ao curtir:", error);
-    }
-  };
-
-  return (
-    <div className="feed-container">
-      <h2>Página Inicial</h2>
-      
-      {/* Área de "O que estou pensando?" */}
-      <div className="compose-box">
-        <form onSubmit={handlePostSubmit}>
-          <textarea 
-            value={newPost}
-            onChange={(e) => setNewPost(e.target.value)}
-            placeholder="O que estou pensando?"
-            maxLength={140}
-          />
-          <button type="submit">Postar</button>
-        </form>
-      </div>
-
-      {/* Lista de Posts */}
-      <div className="posts-list">
-        {posts.map(post => (
-          <div key={post.id} className="post-card">
-            <p>{post.content}</p>
-            <div className="post-actions">
-              <button onClick={() => handleLike(post.id)}>
-                ❤️ {post.likes}
-              </button>
+            {/* Caixa de Nova Postagem */}
+            <div className="compose-box">
+                <textarea 
+                    placeholder="O que está acontecendo?" 
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    maxLength={140}
+                />
+                <div className="compose-actions">
+                    <span className="char-count">{140 - content.length}</span>
+                    <button onClick={handlePostar} className="post-btn">Postar</button>
+                </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+
+            {/* Lista de Posts */}
+            <div className="posts-list">
+                {posts.map(post => (
+                    <div key={post.id} className="post-card">
+                        <div className="post-avatar">{post.author.charAt(0).toUpperCase()}</div>
+                        <div className="post-content">
+                            <div className="post-author">
+                                <strong>{post.author}</strong>
+                            </div>
+                            <p className="post-text">{post.content}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 }

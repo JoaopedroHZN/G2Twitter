@@ -1,11 +1,17 @@
-import React from 'react';
-import Feed from './Feed';
-import './App.css'; // Vamos usar esse arquivo para o estilo!
+import { useContext } from 'react';
+import { AuthContext } from './AuthContext';
+import Auth from './Auth';
+// Importe o Feed que o seu amigo já estilizou
+import Feed from './Feed'; 
 
 function App() {
+  const { user } = useContext(AuthContext);
+
+  // Se não tiver usuário logado, mostra a tela de Login/Cadastro
+  // Se tiver, mostra o Feed da rede social
   return (
     <div>
-      <Feed />
+      {user ? <Feed /> : <Auth />}
     </div>
   );
 }
