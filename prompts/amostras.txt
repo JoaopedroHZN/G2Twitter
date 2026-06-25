@@ -1,1 +1,2 @@
+prompt para estruturar o backend inicial feito por João Pedro: Nossa prova pratica e em dupla... queremos ajuda para comecar
 prompt para gerar rotas do servidor Express feito por João Pedro": "pode ser [em resposta a: criar o server.js com as rotas de Autenticação e Posts]
