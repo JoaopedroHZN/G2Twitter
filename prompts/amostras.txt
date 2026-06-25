@@ -1,1 +1,3 @@
 prompt para gerar rotas do servidor Express feito por João Pedro": "pode ser [em resposta a: criar o server.js com as rotas de Autenticação e Posts]
+
+prompt para gerar a pagina inicial Feed do front end por Carlos Eduardo: Eu quero ajuda para criar um projeto para essa atividade, em que ela vai ser composta pelo sistema de login e cadastro de usuarios, e na parte de cadastro a senha deve ser guardada em hash. Porem eu não realizarei essa parte, me ajude primeiro na criação da pagina inicial de posts para agilizar o processo.
