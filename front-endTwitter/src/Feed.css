@@ -1,11 +1,45 @@
+/* =========================================
+   1. DEFINIÇÃO DAS CORES (VARIÁVEIS)
+   ========================================= */
+
+/* Cores do Tema Claro (Padrão) */
+.feed-container.light {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7f9f9;
+    --border-color: #eff3f4;
+    --text-primary: #0f1419;
+    --text-secondary: #536471;
+    --accent-color: #1da1f2;
+}
+
+/* Cores do Tema Escuro (Twitter Dark Mode) */
+.feed-container.dark {
+    --bg-primary: #15202b;
+    --bg-secondary: #1e2732;
+    --border-color: #38444d;
+    --text-primary: #ffffff;
+    --text-secondary: #8b98a5;
+    --accent-color: #1da1f2;
+}
+
+/* =========================================
+   2. SEU ESTILO ORIGINAL ADAPTADO
+   ========================================= */
+
 .feed-container {
     max-width: 600px;
     margin: 0 auto;
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
     min-height: 100vh;
-    border-left: 1px solid #eff3f4;
-    border-right: 1px solid #eff3f4;
+    
+    /* Aplicando as variáveis de fundo e texto na caixa principal */
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    
+    /* Transição suave ao trocar de tema */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .feed-header {
@@ -13,7 +47,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    border-bottom: 1px solid #eff3f4;
+    border-bottom: 1px solid var(--border-color);
     backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
@@ -21,7 +55,7 @@
 }
 
 .feed-header h2 {
-    color: #1da1f2;
+    color: var(--accent-color);
     margin: 0;
     font-size: 1.5rem;
 }
@@ -30,6 +64,22 @@
     display: flex;
     align-items: center;
     gap: 15px;
+}
+
+/* Estilo para o botão de trocar tema não ficar desconfigurado */
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--bg-secondary);
 }
 
 .logout-btn {
@@ -44,7 +94,7 @@
 
 .compose-box {
     padding: 20px;
-    border-bottom: 10px solid #eff3f4;
+    border-bottom: 10px solid var(--border-color);
 }
 
 .compose-box textarea {
@@ -54,6 +104,10 @@
     font-size: 1.2rem;
     outline: none;
     min-height: 60px;
+    
+    /* Adaptando o textarea para aceitar a cor do tema */
+    background-color: transparent;
+    color: var(--text-primary);
 }
 
 .compose-actions {
@@ -62,17 +116,17 @@
     align-items: center;
     gap: 15px;
     margin-top: 10px;
-    border-top: 1px solid #eff3f4;
+    border-top: 1px solid var(--border-color);
     padding-top: 10px;
 }
 
 .char-count {
-    color: #536471;
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
 .post-btn {
-    background-color: #1da1f2;
+    background-color: var(--accent-color);
     color: white;
     border: none;
     padding: 8px 20px;
@@ -90,18 +144,18 @@
     display: flex;
     gap: 15px;
     padding: 15px 20px;
-    border-bottom: 1px solid #eff3f4;
+    border-bottom: 1px solid var(--border-color);
     transition: background-color 0.2s;
 }
 
 .post-card:hover {
-    background-color: #f7f9f9;
+    background-color: var(--bg-secondary);
 }
 
 .post-avatar {
     width: 48px;
     height: 48px;
-    background-color: #1da1f2;
+    background-color: var(--accent-color);
     color: white;
     border-radius: 50%;
     display: flex;

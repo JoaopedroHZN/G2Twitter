@@ -1,10 +1,13 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from './AuthContext';
+import { ThemeContext } from './ThemeContext'; // 🔥 1. Importando o Contexto do Tema
 import axios from 'axios';
-import './Feed.css'; // 🔥 Importando o visual!
+import './Feed.css';
 
 export default function Feed() {
     const { user, logout } = useContext(AuthContext);
+    const { theme, toggleTheme } = useContext(ThemeContext); // 🔥 2. Puxando o tema atual e a função de troca
+
     const [posts, setPosts] = useState([]);
     const [content, setContent] = useState('');
 
@@ -40,11 +43,18 @@ export default function Feed() {
     };
 
     return (
-        <div className="feed-container">
+        // 🔥 3. Aplicando a classe do tema dinamicamente (light ou dark) na div principal
+        <div className={`feed-container ${theme}`}>
+            
             {/* Cabeçalho */}
             <header className="feed-header">
                 <h2>🐦 MicroTweet</h2>
                 <div className="user-info">
+                    {/* 🔥 4. Botão para trocar o tema posicionado no cabeçalho */}
+                    <button onClick={toggleTheme} className="theme-toggle-btn" style={{ marginRight: '15px' }}>
+                        {theme === 'light' ? '🌙 Escuro' : '☀️ Claro'}
+                    </button>
+                    
                     <span>Olá, <strong>{user?.name}</strong>!</span>
                     <button onClick={logout} className="logout-btn">Sair</button>
                 </div>
@@ -68,7 +78,7 @@ export default function Feed() {
             <div className="posts-list">
                 {posts.map(post => (
                     <div key={post.id} className="post-card">
-                        <div className="post-avatar">{post.author.charAt(0).toUpperCase()}</div>
+                        <div className="post-avatar">{post.author?.charAt(0).toUpperCase()}</div>
                         <div className="post-content">
                             <div className="post-author">
                                 <strong>{post.author}</strong>
