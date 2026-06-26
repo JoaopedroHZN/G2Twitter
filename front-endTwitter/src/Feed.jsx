@@ -28,7 +28,7 @@ export default function Feed() {
         if (!content.trim()) return;
 
         try {
-            await axios.post('g2-twitter-ptoqq7gzy-joaopedrohzns-projects.vercel.app', {
+            await axios.post('https://g2twitter.onrender.com/api/post', {
                 user_id: user.id,
                 content: content
             });
