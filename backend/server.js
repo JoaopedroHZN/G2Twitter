@@ -50,15 +50,16 @@ app.post('/api/login', (req, res) => {
 // ==========================================
 // ROTA 3: LISTAR POSTS (Global) - Requisito 4.2
 // ==========================================
+// Rota de Listar Posts (Contando os favoritos dinamicamente)
 app.get('/api/posts', (req, res) => {
-    const query = `
-        SELECT posts.id, posts.content, posts.created_at, users.name as author, users.id as author_id
-        FROM posts
-        JOIN users ON posts.user_id = users.id
-        ORDER BY posts.created_at DESC
+    const sql = `
+        SELECT posts.*, 
+               (SELECT COUNT(*) FROM favorites WHERE favorites.post_id = posts.id) as likes
+        FROM posts 
+        ORDER BY id DESC
     `;
-    db.all(query, [], (err, rows) => {
-        if (err) return res.status(500).json({ error: "Erro ao buscar posts" });
+    db.all(sql, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
     });
 });
@@ -66,16 +67,47 @@ app.get('/api/posts', (req, res) => {
 // ==========================================
 // ROTA 4: CRIAR POST - Requisito 4.2
 // ==========================================
-app.post('/api/posts', (req, res) => {
-    const { user_id, content } = req.body;
-    
-    if (!user_id || !content) {
-        return res.status(400).json({ error: "Dados inválidos" });
-    }
+// 🔥 Rota de Listar Posts (Trazendo o nome do autor e os likes)
+app.get('/api/posts', (req, res) => {
+    const sql = `
+        SELECT posts.*, 
+               users.name AS author,
+               (SELECT COUNT(*) FROM favorites WHERE favorites.post_id = posts.id) as likes
+        FROM posts 
+        LEFT JOIN users ON posts.user_id = users.id
+        ORDER BY posts.id DESC
+    `;
+    db.all(sql, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
 
-    db.run(`INSERT INTO posts (user_id, content) VALUES (?, ?)`, [user_id, content], function(err) {
-        if (err) return res.status(500).json({ error: "Erro ao publicar tweet" });
-        res.status(201).json({ id: this.lastID, user_id, content });
+// Rota para curtir o post (adicione no seu backend)
+// 🔥 2. Rota para Curtir / Descurtir (Usando a tabela favorites)
+app.post('/api/posts/:id/like', (req, res) => {
+    const postId = req.params.id;
+    const { user_id } = req.body; 
+
+    if (!user_id) return res.status(400).json({ error: "user_id é obrigatório" });
+
+    // Primeiro, verifica se este usuário já curtiu este post
+    const checkSql = `SELECT * FROM favorites WHERE user_id = ? AND post_id = ?`;
+    
+    db.get(checkSql, [user_id, postId], (err, row) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        if (row) {
+            // Se achou o registro, significa que já curtiu. Então vamos DESCURTIR (Deletar)
+            db.run(`DELETE FROM favorites WHERE user_id = ? AND post_id = ?`, [user_id, postId], () => {
+                res.json({ message: "Post descurtido!" });
+            });
+        } else {
+            // Se não achou, significa que não curtiu. Então vamos CURTIR (Inserir)
+            db.run(`INSERT INTO favorites (user_id, post_id) VALUES (?, ?)`, [user_id, postId], () => {
+                res.json({ message: "Post curtido!" });
+            });
+        }
     });
 });
 

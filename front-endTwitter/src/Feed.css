@@ -175,3 +175,35 @@
     margin: 5px 0 0 0;
     line-height: 1.4;
 }
+
+/* =========================================
+   ESTILO DO BOTÃO DE CURTIR
+   ========================================= */
+.post-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 20px;
+}
+
+.like-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1rem;
+    transition: color 0.2s, transform 0.1s;
+    padding: 5px;
+    border-radius: 50px;
+}
+
+.like-btn:hover {
+    color: #e0245e; /* Vermelho padrão do Twitter */
+    background-color: rgba(224, 36, 94, 0.1);
+}
+
+.like-btn:active {
+    transform: scale(0.9); /* Dá um efeitinho de "clique" */
+}

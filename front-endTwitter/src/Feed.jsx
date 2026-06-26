@@ -1,17 +1,16 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from './AuthContext';
-import { ThemeContext } from './ThemeContext'; // 🔥 1. Importando o Contexto do Tema
+import { ThemeContext } from './ThemeContext';
 import axios from 'axios';
 import './Feed.css';
 
 export default function Feed() {
     const { user, logout } = useContext(AuthContext);
-    const { theme, toggleTheme } = useContext(ThemeContext); // 🔥 2. Puxando o tema atual e a função de troca
+    const { theme, toggleTheme } = useContext(ThemeContext); 
 
     const [posts, setPosts] = useState([]);
     const [content, setContent] = useState('');
 
-    // Função para buscar os posts no nosso Backend Node
     const carregarPosts = async () => {
         try {
             const response = await axios.get('http://localhost:3000/api/posts');
@@ -21,12 +20,10 @@ export default function Feed() {
         }
     };
 
-    // Executa assim que a tela abre
     useEffect(() => {
         carregarPosts();
     }, []);
 
-    // Função disparada ao clicar em "Postar"
     const handlePostar = async () => {
         if (!content.trim()) return;
 
@@ -35,35 +32,39 @@ export default function Feed() {
                 user_id: user.id,
                 content: content
             });
-            setContent(''); // Limpa o campo de texto
-            carregarPosts(); // Recarrega a lista para mostrar o post novo na hora
+            setContent(''); 
+            carregarPosts(); 
         } catch (error) {
             console.error("Erro ao publicar:", error);
         }
     };
 
+    // 🔥 NOVA FUNÇÃO: Disparada ao clicar no botão de curtir
+    const handleCurtir = async (postId) => {
+        try {
+            await axios.post(`http://localhost:3000/api/posts/${postId}/like`, {
+                user_id: user.id // Agora estamos enviando o ID do usuário que clicou!
+            });
+            carregarPosts(); // Recarrega para mostrar a nova contagem
+        } catch (error) {
+            console.error("Erro ao curtir:", error);
+        }
+    };
+
     return (
-        // 🔥 3. A NOVA DIV PAI: Ela ocupa a tela inteira e recebe o tema (light ou dark)
         <div className={`app-wrapper ${theme}`}>
-            
-            {/* O container original fica centralizado dentro do wrapper */}
             <div className="feed-container">
-                
-                {/* Cabeçalho */}
                 <header className="feed-header">
                     <h2>🐦 MicroTweet</h2>
                     <div className="user-info">
-                        {/* 🔥 4. Botão para trocar o tema posicionado no cabeçalho */}
                         <button onClick={toggleTheme} className="theme-toggle-btn" style={{ marginRight: '15px' }}>
                             {theme === 'light' ? '🌙 Escuro' : '☀️ Claro'}
                         </button>
-                        
                         <span>Olá, <strong>{user?.name}</strong>!</span>
                         <button onClick={logout} className="logout-btn">Sair</button>
                     </div>
                 </header>
 
-                {/* Caixa de Nova Postagem */}
                 <div className="compose-box">
                     <textarea 
                         placeholder="O que está acontecendo?" 
@@ -72,12 +73,11 @@ export default function Feed() {
                         maxLength={140}
                     />
                     <div className="compose-actions">
-                        <span className="char-count">{140 - content.length}</span>
+                        <span className="char-count">Maximo de letras {140 - content.length}</span>
                         <button onClick={handlePostar} className="post-btn">Postar</button>
                     </div>
                 </div>
 
-                {/* Lista de Posts */}
                 <div className="posts-list">
                     {posts.map(post => (
                         <div key={post.id} className="post-card">
@@ -87,6 +87,14 @@ export default function Feed() {
                                     <strong>{post.author}</strong>
                                 </div>
                                 <p className="post-text">{post.content}</p>
+                                
+                                {/* 🔥 NOVO BOTÃO: Ações do Post (Curtir) */}
+                                <div className="post-actions">
+                                    <button onClick={() => handleCurtir(post.id)} className="like-btn">
+                                        ❤️ {post.likes || 0}
+                                    </button>
+                                </div>
+                                
                             </div>
                         </div>
                     ))}
