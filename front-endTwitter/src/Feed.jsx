@@ -28,7 +28,7 @@ export default function Feed() {
         if (!content.trim()) return;
 
         try {
-            await axios.post('https://g2twitter.onrender.com/api/post', {
+            await axios.post('http://localhost:3000/api/posts/', {
                 user_id: user.id,
                 content: content
             });
