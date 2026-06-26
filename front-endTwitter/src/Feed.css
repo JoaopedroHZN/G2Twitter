@@ -2,8 +2,8 @@
    1. DEFINIÇÃO DAS CORES (VARIÁVEIS)
    ========================================= */
 
-/* Cores do Tema Claro (Padrão) */
-.feed-container.light {
+/* Mudamos o nome nas variáveis para apontar para o app-wrapper */
+.app-wrapper.light {
     --bg-primary: #ffffff;
     --bg-secondary: #f7f9f9;
     --border-color: #eff3f4;
@@ -12,8 +12,7 @@
     --accent-color: #1da1f2;
 }
 
-/* Cores do Tema Escuro (Twitter Dark Mode) */
-.feed-container.dark {
+.app-wrapper.dark {
     --bg-primary: #15202b;
     --bg-secondary: #1e2732;
     --border-color: #38444d;
@@ -23,23 +22,26 @@
 }
 
 /* =========================================
-   2. SEU ESTILO ORIGINAL ADAPTADO
+   2. AJUSTE DAS DIVS PRINCIPAIS
    ========================================= */
 
-.feed-container {
-    max-width: 600px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
+/* O wrapper ocupa a tela inteira, pintando o fundo e definindo a cor do texto */
+.app-wrapper {
     min-height: 100vh;
-    
-    /* Aplicando as variáveis de fundo e texto na caixa principal */
+    width: 100%;
     background-color: var(--bg-primary);
     color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* O feed-container agora é transparente, fica centralizado e apenas com as bordas laterais */
+.feed-container {
+    max-width: 600px;
+    margin: 0 auto; /* É isso aqui que centraliza o feed na tela */
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
     border-left: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
-    
-    /* Transição suave ao trocar de tema */
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .feed-header {

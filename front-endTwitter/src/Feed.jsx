@@ -43,50 +43,54 @@ export default function Feed() {
     };
 
     return (
-        // 🔥 3. Aplicando a classe do tema dinamicamente (light ou dark) na div principal
-        <div className={`feed-container ${theme}`}>
+        // 🔥 3. A NOVA DIV PAI: Ela ocupa a tela inteira e recebe o tema (light ou dark)
+        <div className={`app-wrapper ${theme}`}>
             
-            {/* Cabeçalho */}
-            <header className="feed-header">
-                <h2>🐦 MicroTweet</h2>
-                <div className="user-info">
-                    {/* 🔥 4. Botão para trocar o tema posicionado no cabeçalho */}
-                    <button onClick={toggleTheme} className="theme-toggle-btn" style={{ marginRight: '15px' }}>
-                        {theme === 'light' ? '🌙 Escuro' : '☀️ Claro'}
-                    </button>
-                    
-                    <span>Olá, <strong>{user?.name}</strong>!</span>
-                    <button onClick={logout} className="logout-btn">Sair</button>
-                </div>
-            </header>
-
-            {/* Caixa de Nova Postagem */}
-            <div className="compose-box">
-                <textarea 
-                    placeholder="O que está acontecendo?" 
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    maxLength={140}
-                />
-                <div className="compose-actions">
-                    <span className="char-count">{140 - content.length}</span>
-                    <button onClick={handlePostar} className="post-btn">Postar</button>
-                </div>
-            </div>
-
-            {/* Lista de Posts */}
-            <div className="posts-list">
-                {posts.map(post => (
-                    <div key={post.id} className="post-card">
-                        <div className="post-avatar">{post.author?.charAt(0).toUpperCase()}</div>
-                        <div className="post-content">
-                            <div className="post-author">
-                                <strong>{post.author}</strong>
-                            </div>
-                            <p className="post-text">{post.content}</p>
-                        </div>
+            {/* O container original fica centralizado dentro do wrapper */}
+            <div className="feed-container">
+                
+                {/* Cabeçalho */}
+                <header className="feed-header">
+                    <h2>🐦 MicroTweet</h2>
+                    <div className="user-info">
+                        {/* 🔥 4. Botão para trocar o tema posicionado no cabeçalho */}
+                        <button onClick={toggleTheme} className="theme-toggle-btn" style={{ marginRight: '15px' }}>
+                            {theme === 'light' ? '🌙 Escuro' : '☀️ Claro'}
+                        </button>
+                        
+                        <span>Olá, <strong>{user?.name}</strong>!</span>
+                        <button onClick={logout} className="logout-btn">Sair</button>
                     </div>
-                ))}
+                </header>
+
+                {/* Caixa de Nova Postagem */}
+                <div className="compose-box">
+                    <textarea 
+                        placeholder="O que está acontecendo?" 
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        maxLength={140}
+                    />
+                    <div className="compose-actions">
+                        <span className="char-count">{140 - content.length}</span>
+                        <button onClick={handlePostar} className="post-btn">Postar</button>
+                    </div>
+                </div>
+
+                {/* Lista de Posts */}
+                <div className="posts-list">
+                    {posts.map(post => (
+                        <div key={post.id} className="post-card">
+                            <div className="post-avatar">{post.author?.charAt(0).toUpperCase()}</div>
+                            <div className="post-content">
+                                <div className="post-author">
+                                    <strong>{post.author}</strong>
+                                </div>
+                                <p className="post-text">{post.content}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
