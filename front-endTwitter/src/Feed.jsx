@@ -31,7 +31,7 @@ export default function Feed() {
         if (!content.trim()) return;
 
         try {
-            await axios.post('http://localhost:3000/api/posts', {
+            await axios.post('g2-twitter-ptoqq7gzy-joaopedrohzns-projects.vercel.app', {
                 user_id: user.id,
                 content: content
             });
