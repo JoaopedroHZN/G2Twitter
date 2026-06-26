@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     const api = axios.create({
-        baseURL: 'https://g2twitter.onrender.com'
+        baseURL: 'https://g2twitter.onrender.com/api'
     });
 
     // Função de Login
