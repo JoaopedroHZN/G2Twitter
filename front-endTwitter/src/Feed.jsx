@@ -13,7 +13,7 @@ export default function Feed() {
 
     const carregarPosts = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/posts');
+            const response = await axios.get('https://g2twitter.onrender.com/api/posts');
             setPosts(response.data);
         } catch (error) {
             console.error("Erro ao carregar posts:", error);
